@@ -1,54 +1,24 @@
-'use strict';
+import koa from 'koa';
+import bodyParser from 'koa-bodyparser';
+import staticServer from 'koa-static';
+import mongoose from 'mongoose';
+import nunjucks from './middlewares/nunjucks';
+import routers from './routers';
 
-var koa = require('koa');
-var bodyParser = require('koa-bodyparser');
-var session = require('koa-session');
-var staticServer = require('koa-static');
-var mongoose = require('mongoose');
-var routes = require('./routes/routers');
 
-// local middlewares
-var nunjucks = require('../middlewares/koa-nunjucks/index');
-
-// create app
-var app = koa();
+const app = koa();
 
 mongoose.connect('mongodb://localhost:27017/kblog');
 mongoose.connection.on('error', console.error.bind(console, '连接数据库失败'));
 
-// config static dir
 app.use(staticServer(__dirname + '/public'));
-
-// nunjucks config
 app.use(nunjucks('app/views', {
     noCache: process.env.NODE_ENV === 'production',
-    watch: ! process.env.NODE_ENV === 'production'
+    watch: !process.env.NODE_ENV === 'production'
 }));
-
-// session
-app.keys = ['some secret hurr'];
-app.use(session(app));
-// body parser
 app.use(bodyParser());
-// routes
-routes(app);
 
-// catch 404
-app.use(function *(next) {
-    let self = this;
+routers(app);
 
-    if (this.status === 404) {
-        return self.render('page/404.html', {
-            user: self.session.user,
-        });
-    }
-
-    yield next;
-});
-
-// for test
-//app.listen(8080);
-
-// for production
-app.listen(8080, '127.0.0.1');
+app.listen(8989, '0.0.0.0');
 

@@ -1,21 +1,35 @@
-'use strict';
-
 var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-    devtool: '#source-map',
-    watch: true,
-    entry: {
-        details: './app/public/js/post/details.js',
-        new: './app/public/js/post/new.js',
-    },
+    devtool: 'source-map',
+    entry: [
+        './app/public/app.js'
+    ],
     output: {
-        path: path.join(__dirname, 'app/public/js/dest'),
-        filename: '[name].js',
+        path: path.join(__dirname, 'app/public/dist'),
+        filename: 'bundle.js',
+        publicPath: '/static/'
     },
     plugins: [
-        new webpack.optimize.UglifyJsPlugin()
+        new webpack.optimize.OccurenceOrderPlugin(),
+        new webpack.DefinePlugin({
+            'process.env': {
+                'NODE_ENV': "'production'"
+            }
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            compressor: {
+                warnings: false
+            }
+        })
     ],
+    module: {
+        loaders: [{
+            test: /\.js$/,
+            loaders: ['babel'],
+            include: path.join(__dirname, 'app')
+        }]
+    }
 };
 
