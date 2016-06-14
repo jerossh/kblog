@@ -1,35 +1,39 @@
 import React, { Component } from 'react';
-import $ from 'jquery';
+import { connect } from 'react-redux';
 
+import { getPosts } from '../actions';
 import Posts from '../components/posts';
 
-class PostsContainer extends Component {
+class HomeContainer extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            posts: []
-        };
     }
 
-    componentDidMount() {
-        this.req = $.get('/api/posts/${this.props.cate}')
-            .done(function(data) {
-                this.setState({
-                    posts: data.posts
-                });
-            }.bind(this));
-    }
-
-    componentWillUnmount() {
-        this.req.abort();
+    componentWillMount() {
+        const { dispatch, getPosts } = this.props;
+        const cate = this.props.params.cate;
+        dispatch(getPosts(cate));
     }
 
     render() {
         return (
-            <Posts posts={this.state.posts} />
+            <Posts posts={this.props.posts} />
         );
     }
 }
 
-export default PostsContainer;
+const mapStateToProps = (state) => {
+    return {
+        posts: state.posts.posts,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getPosts,
+        dispatch,
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeContainer);
 

@@ -1,9 +1,9 @@
 import React from 'react';
-import Header from './header';
+import HeaderContainer from '../containers/headerContainer';
 
 const App = ({ children }) => (
     <div>
-        <Header />
+        <HeaderContainer />
         <div className="container">{children}</div>
     </div>
 );

@@ -40,5 +40,17 @@ PostSchema.static('findById', function(id) {
     });
 });
 
+PostSchema.static('findByTag', function(tag) {
+    return new Promise((resolve, reject) => {
+        this.find({ tags: { $in: [tag] } }, (err, posts) => {
+            if (err || !posts.length) {
+                reject(err);
+            } else {
+                resolve(posts);
+            }
+        });
+    });
+});
+
 export default mongoose.model('Post', PostSchema);
 

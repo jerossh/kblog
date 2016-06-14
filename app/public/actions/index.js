@@ -1,6 +1,5 @@
-import axios from 'axios';
+//import axios from 'axios';
 import fetch from 'isomorphic-fetch';
-import $ from 'jquery';
 
 const shouldGetPosts = () => {
     return {
@@ -12,6 +11,7 @@ const getPostsSuccess = (posts) => {
     return {
         type: 'GET_POSTS_SUCCESS',
         payload: posts.posts,
+        currentCate: posts.currentCate
     };
 };
 
@@ -26,7 +26,7 @@ export const getPosts = (cate) => {
     return dispatch => {
         dispatch(shouldGetPosts());
 
-        return fetch('/api/posts')
+        return fetch(`/api/posts?cate=${cate}`)
             .then(response => response.json())
             .then(json => dispatch(getPostsSuccess(json)));
     };

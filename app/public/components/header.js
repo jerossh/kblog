@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-const Header = () => (
+const Header = ({ cates, currentCate, getPosts }) => (
     <div className="navbar navbar-default">
         <div className="container">
             <div className="navbar-header">
@@ -11,19 +11,18 @@ const Header = () => (
                     <span className="icon-bar"></span>
                     <span className="icon-bar"></span>
                 </button>
-                <Link to="/" className="navbar-brand">前端日志网</Link>
+                <Link to="/" className="navbar-brand" onClick={() => getPosts()}>前端日志网</Link>
             </div>
             <div className="collapse navbar-collapse" id="main-navbar">
                 <ul className="nav navbar-nav">
-                    <li className="active">
-                        <Link to="/">首页</Link>
+                    <li className={currentCate === 'index' ? 'active': ''}>
+                        <Link to="/" onClick={() => getPosts()}>首页</Link>
                     </li>
-                    <li>
-                        <Link to="/frontend">前端</Link>
-                    </li>
-                    <li>
-                        <Link to="/nodejs">Node.js</Link>
-                    </li>
+                    {cates && cates.length && cates.map((cate, i) =>
+                        <li className={currentCate === cate.url ? 'active' : ''} key={i}>
+                            <Link to={`/${cate.url}`} onClick={() => getPosts(cate.url)}>{cate.name}</Link>
+                        </li>
+                    )}
                 </ul>
             </div>
         </div>

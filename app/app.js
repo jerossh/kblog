@@ -5,7 +5,6 @@ import mongoose from 'mongoose';
 import nunjucks from './middlewares/nunjucks';
 import routers from './routers';
 
-
 const app = koa();
 
 mongoose.connect('mongodb://localhost:27017/kblog');
