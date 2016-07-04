@@ -1,5 +1,5 @@
 import koaRouter from 'koa-router';
-import posts from '../api/posts';
+import { getPost, getPosts } from '../api/posts';
 import cates from '../api/category';
 
 export default (app) => {
@@ -11,7 +11,8 @@ export default (app) => {
         yield next;
     });
 
-    router.get('/api/posts', posts);
+    router.get('/api/post/:postId', getPost);
+    router.get('/api/posts', getPosts);
     router.get('/api/cates', cates);
 
     router.get('*', function *(next) {

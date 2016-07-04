@@ -12,7 +12,7 @@ import * as reducers from './reducers';
 import NotFound from './components/notFound';
 import App from './containers/appContainer';
 import PostsContainer from './containers/postsContainer';
-//import PostContainer from './containers/postContainer';
+import PostContainer from './containers/postContainer';
 
 const reducer = combineReducers({
     ...reducers,
@@ -34,6 +34,7 @@ render(
             <Route path="/" component={App}>
                 <IndexRoute component={PostsContainer} />
                 <Route path=":cate" component={PostsContainer} />
+                <Route path="p/:postId.html" component={PostContainer} />
                 <Route path="*" component={NotFound} />
             </Route>
         </Router>

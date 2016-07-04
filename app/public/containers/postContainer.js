@@ -1,35 +1,43 @@
-import React, { Component, PropTypes } from 'react';
-import $ from 'jquery';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
+import { getPost } from '../actions';
 import Post from '../components/post';
 
 class PostContainer extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            posts: {}
-        };
     }
 
-    componentDidMount() {
-        this.req = $.get(this.props.source)
-            .done(function(data) {
-                this.setState({
-                    post: data.post
-                });
-            }.bind(this));
-    }
-
-    componentWillUnmount() {
-        this.req.abort();
+    componentWillMount() {
+        const { dispatch, getPost, params } = this.props;
+        const postId = params.postId;
+        dispatch(getPost(postId));
     }
 
     render() {
+        const { post } = this.props;
         return (
-            <Post post={this.state.post} />
+            <Post post={post} />
         );
     }
 }
 
-export default PostContainer;
+const mapStateToProps = (state) => {
+    return {
+        post: state.post.post,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getPost,
+        dispatch,
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(PostContainer);
 

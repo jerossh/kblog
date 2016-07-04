@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { getPosts } from '../actions';
-import { getCates } from '../actions/category';
+import { getPosts, getCates } from '../actions';
 import Header from '../components/header';
 
 class HeaderContainer extends Component {
@@ -16,7 +15,16 @@ class HeaderContainer extends Component {
     }
 
     render() {
-        const { cates, currentCate, switchCate } = this.props;
+        const {
+            cates,
+            postTime,
+            postsTime,
+            postCate,
+            postsCate,
+            switchCate,
+        } = this.props;
+
+        let currentCate = postTime > postsTime ? postCate : postsCate;
 
         return (
             <div>
@@ -32,7 +40,10 @@ class HeaderContainer extends Component {
 const mapStateToProps = (state) => {
     return {
         cates: state.cates.cates,
-        currentCate: state.posts.currentCate,
+        postTime: state.post.timeStamp,
+        postsTime: state.posts.timeStamp,
+        postCate: state.post.currentCate,
+        postsCate: state.posts.currentCate,
     };
 }
 
