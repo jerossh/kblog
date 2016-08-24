@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import marked from 'marked';
 
 const Schema = mongoose.Schema;
 
@@ -9,7 +10,14 @@ const PostSchema = new Schema({
     category: { name: String, url: String },
     tags: { type: Array, default: [] },
     views: { type: Number, default: 0 },
-    createAt: { type: Date, default: Date.now },
+    createdAt: { type: Date, default: Date.now },
+}, {
+    toJSON: { virtuals: true }
+});
+
+
+PostSchema.virtual('markedContent').get(function() {
+    return marked(this.content);
 });
 
 PostSchema.static('findByCate', function(cate) {

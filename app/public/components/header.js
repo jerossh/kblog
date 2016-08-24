@@ -15,9 +15,6 @@ const Header = ({ cates, currentCate, getPosts }) => (
             </div>
             <div className="collapse navbar-collapse" id="main-navbar">
                 <ul className="nav navbar-nav">
-                    <li>
-                        <Link to="/404" onClick={() => getPosts('notfound')}>404</Link>
-                    </li>
                     <li className={currentCate === 'index' ? 'active': ''}>
                         <Link to="/" onClick={() => getPosts()}>首页</Link>
                     </li>

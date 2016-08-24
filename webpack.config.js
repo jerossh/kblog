@@ -2,7 +2,9 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-    devtool: 'source-map',
+    watch: true,
+    cache: true,
+    devtool: 'eval',
     entry: [
         './app/public/app.js'
     ],
@@ -10,6 +12,10 @@ module.exports = {
         path: path.join(__dirname, 'app/public/dist'),
         filename: 'bundle.js',
         publicPath: '/static/'
+    },
+    resolve: {
+        extensions: ['', '.js'],
+        root: path.resolve(__dirname, 'app/public'),
     },
     plugins: [
         new webpack.optimize.OccurenceOrderPlugin(),
